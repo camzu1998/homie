@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\HouseController;
@@ -27,6 +28,8 @@ Route::put('/users/{user}', [UserController::class, 'update'])->name('users.upda
 Route::prefix('api')->group(function () {
     //User routes
     Route::get('/user', [UserController::class, 'check'])->name('users.check');
+    Route::get('/dashboard', [DashboardController::class, 'dashboardData'])->name('dashboard.data');
+
     //House routes
     Route::get('/houses', [HouseController::class, 'index'])->name('houses.index');
     Route::post('/houses', [HouseController::class, 'store'])->name('houses.store');

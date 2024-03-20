@@ -4,6 +4,7 @@ import houseStore from './modules/houseStore';
 import roomStore from "./modules/roomsStore";
 import dutyStore from "./modules/dutyStore";
 import entryStore from "./modules/entriesStore";
+import dashboardStore from "./modules/dashboardStore.js";
 
 const persist = new VuexPersistence({
     key: 'vuex',
@@ -18,7 +19,8 @@ const store = createStore({
         house: houseStore,
         room: roomStore,
         duty: dutyStore,
-        entry: entryStore
+        entry: entryStore,
+        dashboard: dashboardStore
     },
     state: {
             isLoggedIn: false,
@@ -44,6 +46,7 @@ const store = createStore({
             commit('removeRooms');
             commit('removeDuties');
             commit('removeEntries');
+            commit('removeDashboard');
         }
     },
     strict: debug,

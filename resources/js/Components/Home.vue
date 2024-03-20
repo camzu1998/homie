@@ -1,3 +1,101 @@
 <template>
-    Home
+    <div class="row">
+        <div class="col-4">
+            <div class="card border-primary">
+                <div class="card-header border-primary">
+                    <h5 class="card-title text-center">Your profile</h5>
+                </div>
+                <img src="/images/profile.png" class="card-img-top" alt="User Profile image">
+                <div class="card-body">
+                    <div class="user-info">
+                        <h5 class="text-center text-primary">Hello {{ user.name }}</h5>
+                        <p class="card-text">Today duties todo: 20</p>
+                        <p class="card-text">Today duties todo: 20</p>
+                    </div>
+                    <hr class="text-primary" style="opacity: 0.75 !important;"/>
+                    <div class="statistic-panel">
+                        <h5 class="text-center text-primary">Your statistics</h5>
+                        <p class="card-text">Added duties: 10</p>
+                        <p class="card-text">Added home entries: 12</p>
+                        <p class="card-text">Executed duties: 30</p>
+                        <p class="card-text">Added duties: 10</p>
+                        <p class="card-text">Added duties: 10</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="card border-info">
+                        <div class="card-header border-info">
+                            <h5 class="card-title text-center">Next duty</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row flex-column">
+                                <Task v-for="task in tasks" :key="task.id" :task="task" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-info">
+                        <div class="card-header border-info">
+                            <h5 class="card-title text-center">Tasks done in this month</h5>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-info">
+                        <div class="card-header border-info">
+                            <h5 class="card-title text-center">Week preview</h5>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
+<script>
+import {ref} from "vue";
+import Task from "./Partials/Dashboard/Task.vue";
+
+export default {
+    components: {Task},
+    mounted() {
+        this.fetchDashboardData();
+    },
+
+    data() {
+        return {
+            modal: ref(false),
+            user:  this.$store.state.user,
+            tasks:  this.$store.state.dashboard.tasks,
+        };
+    },
+
+    methods: {
+        fetchDashboardData() {
+            axios.get('/api/dashboard')
+                .then(response => {
+                    this.$store.commit('setTasks', response.data.tasks);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+        reload() {
+            this.$forceUpdate();
+        }
+    },
+};
+</script>

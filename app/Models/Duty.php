@@ -16,6 +16,7 @@ class Duty extends Model
         'description',
         'user_id',
         'room_id',
+        'house_id',
         'status',
         'frequency',
         'start_date',

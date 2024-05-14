@@ -24,7 +24,7 @@ class AuthController extends Controller
                 "user" => $user,
                 "houses" => $user->houses->load(['owner']),
                 "pickedHouse" => $user->picked_house_id,
-                'entries' => auth()->user()->pickedHouse->entries
+                'entries' => $user->picked_house_id != null ? $user->pickedHouse->entries : []
             ]);
         }
 

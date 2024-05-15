@@ -5,55 +5,51 @@ namespace App\Services;
 use App\Enums\DutyFrequency;
 use App\Models\Duty;
 use App\Models\User;
+use App\Repositories\DutyRepository;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class DashboardService
 {
-    private User $user;
+    private DutyRepository $dutyRepository;
+
+    public function __construct(DutyRepository $dutyRepository)
+    {
+        $this->dutyRepository = $dutyRepository;
+    }
 
     public function getTasks(): Collection
     {
-        $this->user = auth()->user()->load(['pickedHouse.duties.entries', 'pickedHouse.entries']);
+        $duties = $this->dutyRepository->get();
 
         $tasks = collect();
-        foreach ($this->user->pickedHouse->duties as $duty) {
-            if (
-                $duty->status != 'active' &&
-                !($this->compareDutyFrequency($duty) && $duty->last_performed != null) &&
-                ($duty->user_id != $this->user->id && !empty($duty->user_id))
-            ) {
-                continue;
-            }
-            $lastEntry = $duty->entries->last();
-            do {
-                $lastPerformed = Carbon::parse($duty->start_date);
-                $frequency = DutyFrequency::fromKey(Str::upper($duty->frequency));
-                $nextExecutionDate = $lastPerformed->addDays($frequency->value);
-            } while ($nextExecutionDate->gte(now()));
-
+        foreach ($duties as $duty) {
             $tasks->push([
                 'id' => $duty->id,
                 'name' => $duty->name,
-                'execution_date' => $nextExecutionDate->format('d-m-Y'),
-                'status' => $lastEntry->is_succeed ?? false ? 'done' : 'to be done',
-                'color' => $this->getDutyColor($nextExecutionDate, $lastEntry->is_succeed ?? false),
+                'execution_date' => $duty->next_execution_date,
+                'status' => $duty->task_status,
+                'color' => $this->getDutyColor(Carbon::parse($duty->next_execution_date), $duty->task_status == 'done'),
             ]);
         }
 
         return $tasks;
     }
-
-    private function compareDutyFrequency(Duty $duty): bool
+    public function getTasksForWeekTimeline(Collection|null $tasks = null): array
     {
-        $lastPerformed = Carbon::parse($duty->last_performed ?? $duty->start_date);
-        $frequency = DutyFrequency::fromKey(Str::upper($duty->frequency));
-        $taskExecutionRangeStart = now()->subDays(5);
-        $taskExecutionRangeEnd = now()->addDay();
-        $nextTaskExecutionDate = $lastPerformed->addDays($frequency->value);
-
-        return $nextTaskExecutionDate->gte($taskExecutionRangeStart) && $nextTaskExecutionDate->lte($taskExecutionRangeEnd);
+        $array = [];
+        if ($tasks === null) {
+            $tasks = $this->getTasks();
+        }
+        foreach ($tasks as $task) {
+            $array[] = [
+                'name' => $task['name'],
+                'date' => Carbon::parse($task['execution_date'])->format('Y-m-d')
+            ];
+        }
+        return $array;
     }
 
     private function getDutyColor(Carbon $executionDate, bool $isSucceeded = false): string
@@ -66,7 +62,7 @@ class DashboardService
             return 'warning';
         } elseif ($executionDate->isToday()) {
             return 'primary';
-        } elseif ($executionDate->isTomorrow()) {
+        } elseif ($executionDate->isFuture()) {
             return 'info';
         }
 

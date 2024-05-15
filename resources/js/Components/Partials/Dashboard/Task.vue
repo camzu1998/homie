@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="col-12">
+    <div :class="'col-12 border-bottom border-'+task.color">
         <div class="row">
             <div class="col-7">
                 Date: {{ task.execution_date }}
@@ -18,7 +18,7 @@ const props = defineProps({
                 <span :class="'badge bg-' + task.color">{{ task.status }}</span>
             </div>
         </div>
-        <hr>
+        <hr :class="'text-'+task.color">
         <div class="col-12">
             <p>{{ task.name }}</p>
         </div>

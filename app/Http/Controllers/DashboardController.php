@@ -17,8 +17,13 @@ class DashboardController extends Controller
     }
     public function dashboardData(): JsonResponse
     {
+        $tasks = $this->dashboardService->getTasks();
+        $doneTasks = $tasks->where('status', 'done')->take(3);
+        $week = $this->dashboardService->getTasksForWeekTimeline($tasks);
         return response()->json([
-            'tasks' => $this->dashboardService->getTasks(),
+            'tasks' => $tasks->take(3),
+            'doneTasks' => $doneTasks,
+            'week' => $week,
         ]);
     }
 }

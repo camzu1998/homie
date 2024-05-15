@@ -44,7 +44,7 @@
                             <h5 class="card-title text-center">Tasks done in this month</h5>
                         </div>
                         <div class="card-body">
-
+                            <Task v-for="task in doneTasks" :key="task.id" :task="task" />
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,9 @@
                             <h5 class="card-title text-center">Week preview</h5>
                         </div>
                         <div class="card-body">
-
+                            <WeekSchedule
+                                :events="week"
+                            />
                         </div>
                     </div>
                 </div>
@@ -67,18 +69,22 @@
 <script>
 import {ref} from "vue";
 import Task from "./Partials/Dashboard/Task.vue";
+import WeekSchedule from "./Dashboard/WeekSchedule.vue";
 
 export default {
-    components: {Task},
+    components: {WeekSchedule, Task},
     mounted() {
         this.fetchDashboardData();
     },
 
     data() {
         return {
+            windowWidth: ref(window.innerWidth),
             modal: ref(false),
             user:  this.$store.state.user,
             tasks:  this.$store.state.dashboard.tasks,
+            doneTasks:  this.$store.state.dashboard.doneTasks,
+            week:  this.$store.state.dashboard.weekTasks,
         };
     },
 
@@ -86,7 +92,7 @@ export default {
         fetchDashboardData() {
             axios.get('/api/dashboard')
                 .then(response => {
-                    this.$store.commit('setTasks', response.data.tasks);
+                    this.$store.commit('setTasks', response.data);
                 })
                 .catch(error => {
                     console.error(error);

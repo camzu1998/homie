@@ -25,9 +25,12 @@ class DutyRepository
             ) {
                 continue;
             }
-            $lastPerformed = Carbon::parse($duty->last_performed ?? $duty->start_date);
-            $frequency = DutyFrequency::fromKey(Str::upper($duty->frequency));
-            $nextExecutionDate = $lastPerformed->addDays($frequency->value);
+            $nextExecutionDate = Carbon::parse($duty->start_date);
+            if ($duty->entries()->exists()) {
+                $lastPerformed = Carbon::parse($duty->last_performed ?? $duty->start_date);
+                $frequency = DutyFrequency::fromKey(Str::upper($duty->frequency));
+                $nextExecutionDate = $lastPerformed->addDays($frequency->value);
+            }
             $duty->next_execution_date = $nextExecutionDate->format('d-m-Y');
             $duty->task_status = $this->getStatus(optional($duty->entries->last())->is_succeed); //Todo: check if last entry is executed near the execution date
 

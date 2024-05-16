@@ -9,17 +9,15 @@
                 <div class="card-body">
                     <div class="user-info">
                         <h5 class="text-center text-primary">Hello {{ user.name }}</h5>
-                        <p class="card-text">Today duties todo: 20</p>
-                        <p class="card-text">Today duties todo: 20</p>
+                        <p class="card-text">Today duties todo: {{ todayDutiesCount }}</p>
                     </div>
                     <hr class="text-primary" style="opacity: 0.75 !important;"/>
                     <div class="statistic-panel">
                         <h5 class="text-center text-primary">Your statistics</h5>
-                        <p class="card-text">Added duties: 10</p>
-                        <p class="card-text">Added home entries: 12</p>
-                        <p class="card-text">Executed duties: 30</p>
-                        <p class="card-text">Added duties: 10</p>
-                        <p class="card-text">Added duties: 10</p>
+                        <p class="card-text">Added duties: {{ addedDutiesCount }}</p>
+                        <p class="card-text">Executed duties: {{ doneDutiesCount }}</p>
+                        <p class="card-text">Added home entries: 0</p>
+                        <p class="card-text">Executed home entries: 0</p>
                     </div>
                 </div>
             </div>
@@ -85,6 +83,9 @@ export default {
             tasks:  this.$store.state.dashboard.tasks,
             doneTasks:  this.$store.state.dashboard.doneTasks,
             week:  this.$store.state.dashboard.weekTasks,
+            doneDutiesCount:  this.$store.state.dashboard.doneDutiesCount,
+            addedDutiesCount:  this.$store.state.dashboard.addedDutiesCount,
+            todayDutiesCount:  this.$store.state.dashboard.todayDutiesCount,
         };
     },
 

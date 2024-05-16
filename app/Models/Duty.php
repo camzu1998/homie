@@ -12,6 +12,7 @@ class Duty extends Model
     use HasFactory;
 
     protected $fillable = [
+        'owner_id',
         'name',
         'description',
         'user_id',

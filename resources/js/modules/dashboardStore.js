@@ -3,17 +3,26 @@ const dashboardStore = {
             tasks: null,
             doneTasks: null,
             weekTasks: null,
+            todayDutiesCount: null,
+            addedDutiesCount: null,
+            doneDutiesCount: null,
     }),
     mutations: {
         setTasks(state, options) {
             state.tasks = options.tasks
             state.doneTasks = options.doneTasks
             state.weekTasks = options.week
+            state.todayDutiesCount = options.todayDutiesCount
+            state.addedDutiesCount = options.addedDutiesCount
+            state.doneDutiesCount = options.doneDutiesCount
         },
         removeDashboard(state) {
             state.tasks = null;
             state.doneTasks = null;
             state.weekTasks = null;
+            state.todayDutiesCount = null;
+            state.addedDutiesCount = null;
+            state.doneDutiesCount = null;
         },
     },
     getters: {

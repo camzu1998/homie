@@ -14,6 +14,7 @@ class Entry extends Model
 
     protected $fillable = [
         'house_id',
+        'owner_id',
         'user_id',
         'entriesable_id',
         'entriesable_type',
@@ -31,6 +32,11 @@ class Entry extends Model
     public function house(): BelongsTo
     {
         return $this->belongsTo(House::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function user(): BelongsTo

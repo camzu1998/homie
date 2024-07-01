@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $week = $this->dashboardService->getTasksForWeekTimeline($tasks);
         $todayDutiesCount = $tasks->where('execution_date', today())->count();
         $addedDutiesCount = auth()->user()->createdDuties->count();
+        $addedEntriesCount = auth()->user()->createdEntries->count();
         $doneDutiesCount = $doneTasks->count();
 
         return response()->json([
@@ -31,6 +32,7 @@ class DashboardController extends Controller
             'todayDutiesCount' => $todayDutiesCount,
             'addedDutiesCount' => $addedDutiesCount,
             'doneDutiesCount' => $doneDutiesCount,
+            'addedEntriesCount' => $addedEntriesCount,
         ]);
     }
 }

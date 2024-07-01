@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->belongsTo(House::class, 'picked_house_id');
     }
 
+    public function createdEntries(): HasMany
+    {
+        return $this->hasMany(Entry::class, 'owner_id');
+    }
+
     public function createdDuties(): HasMany
     {
         return $this->hasMany(Duty::class, 'owner_id');

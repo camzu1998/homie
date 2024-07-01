@@ -6,13 +6,13 @@
                 <th colspan="7">{{ monthName }}</th>
             </tr>
             <tr>
-                <th v-for="(day, index) in days" :key="index">{{ day }}</th>
+                <th v-for="(day, index) in days" :key="index" width="14.29%">{{ day }}</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td v-for="(day, index) in days" :key="index">
-                    <div v-for="(event, eventIndex) in eventsForDay(day)" :key="eventIndex">
+                    <div class="rounded-pill bg-primary text-center" v-for="(event, eventIndex) in eventsForDay(day)" :key="eventIndex">
                         {{ event.name }}
                     </div>
                 </td>

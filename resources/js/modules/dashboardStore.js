@@ -5,6 +5,7 @@ const dashboardStore = {
             weekTasks: null,
             todayDutiesCount: null,
             addedDutiesCount: null,
+            addedEntriesCount: null,
             doneDutiesCount: null,
     }),
     mutations: {
@@ -14,6 +15,7 @@ const dashboardStore = {
             state.weekTasks = options.week
             state.todayDutiesCount = options.todayDutiesCount
             state.addedDutiesCount = options.addedDutiesCount
+            state.addedEntriesCount = options.addedEntriesCount
             state.doneDutiesCount = options.doneDutiesCount
         },
         removeDashboard(state) {
@@ -22,6 +24,7 @@ const dashboardStore = {
             state.weekTasks = null;
             state.todayDutiesCount = null;
             state.addedDutiesCount = null;
+            state.addedEntriesCount = null;
             state.doneDutiesCount = null;
         },
     },

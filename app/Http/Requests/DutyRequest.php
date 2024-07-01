@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Dto\DutyDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DutyRequest extends FormRequest
@@ -11,7 +12,7 @@ class DutyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -31,5 +32,20 @@ class DutyRequest extends FormRequest
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date'],
         ];
+    }
+
+    public function data(): DutyDto
+    {
+        return new DutyDto(
+            name: $this->input('name'),
+            description: $this->input('description'),
+            user_id: $this->input('user_id'),
+            room_id: $this->input('room_id'),
+            status: $this->input('status'),
+            frequency: $this->input('frequency'),
+            start_date: $this->input('start_date'),
+            end_date: $this->input('end_date'),
+            owner_id: auth()->id()
+        );
     }
 }

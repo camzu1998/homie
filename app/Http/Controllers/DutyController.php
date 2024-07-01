@@ -33,7 +33,7 @@ class DutyController extends Controller
      */
     public function store(DutyRequest $request)
     {
-        $duty = auth()->user()->pickedHouse->duties()->create($request->validated());
+        $duty = auth()->user()->pickedHouse->duties()->create($request->data()->toArray());
 
         return response()->json(["duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get()]);
     }

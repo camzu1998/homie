@@ -16,7 +16,7 @@
                         <h5 class="text-center text-primary">Your statistics</h5>
                         <p class="card-text">Added duties: {{ addedDutiesCount }}</p>
                         <p class="card-text">Executed duties: {{ doneDutiesCount }}</p>
-                        <p class="card-text">Added home entries: 0</p>
+                        <p class="card-text">Added home entries: {{ addedEntriesCount }}</p>
                         <p class="card-text">Executed home entries: 0</p>
                     </div>
                 </div>
@@ -85,6 +85,7 @@ export default {
             week:  this.$store.state.dashboard.weekTasks,
             doneDutiesCount:  this.$store.state.dashboard.doneDutiesCount,
             addedDutiesCount:  this.$store.state.dashboard.addedDutiesCount,
+            addedEntriesCount:  this.$store.state.dashboard.addedEntriesCount,
             todayDutiesCount:  this.$store.state.dashboard.todayDutiesCount,
         };
     },
